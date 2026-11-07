@@ -4,9 +4,9 @@
 *.swp
 *.swo
 
-# Backend (Spring Boot)
 carbonwise-backend/target/
 carbonwise-backend/*.jar
+carbonwise-backend/src/main/resources/application.properties
 
 # Frontend (React/Vite - For Later)
 carbonwise-frontend/node_modules/

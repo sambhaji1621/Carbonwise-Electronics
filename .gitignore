@@ -1,0 +1,14 @@
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Backend (Spring Boot)
+carbonwise-backend/target/
+carbonwise-backend/*.jar
+
+# Frontend (React/Vite - For Later)
+carbonwise-frontend/node_modules/
+carbonwise-frontend/dist/
+carbonwise-frontend/.env

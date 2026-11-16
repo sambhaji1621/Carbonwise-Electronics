@@ -1,5 +1,7 @@
 package com.carbonwise.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,6 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails { 
 
     @Id
@@ -32,6 +35,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 15)
     private String phone;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -58,27 +62,43 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // --- SPRING SECURITY USERDETAILS OVERRIDES ---
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+    public BigDecimal getCarbonCredits() {
+        return carbonCredits != null ? carbonCredits : BigDecimal.ZERO;
     }
 
+    // --- SPRING SECURITY USERDETAILS OVERRIDES ---
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String roleName = role != null ? role.name() : "ROLE_USER";
+        String simpleName = roleName.startsWith("ROLE_") ? roleName.substring(5) : roleName;
+        return List.of(
+            new SimpleGrantedAuthority(roleName),
+            new SimpleGrantedAuthority("ROLE_" + roleName),
+            new SimpleGrantedAuthority(simpleName)
+        );
+    }
+
+    @JsonIgnore
     @Override
     public String getUsername() {
         return phone; 
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() { return true; }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() { return true; }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() { return true; }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() { return true; }
 }

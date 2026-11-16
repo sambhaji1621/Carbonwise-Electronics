@@ -4,11 +4,16 @@
 *.swp
 *.swo
 
-carbonwise-backend/target/
-carbonwise-backend/*.jar
-carbonwise-backend/src/main/resources/application.properties
+target/
+**/target/
+*.jar
+uploads/
+**/uploads/
 
-# Frontend (React/Vite - For Later)
-carbonwise-frontend/node_modules/
-carbonwise-frontend/dist/
-carbonwise-frontend/.env
+# Frontend (React/Vite)
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.env
+**/.env
